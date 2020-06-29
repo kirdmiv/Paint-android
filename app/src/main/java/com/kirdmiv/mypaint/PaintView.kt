@@ -1,5 +1,4 @@
 package com.kirdmiv.mypaint
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
@@ -11,11 +10,13 @@ import android.view.View
 
 class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     private val paint = Paint()
-    private val path = Path()
+    private var path = Path()
+    private val paths: MutableList<Path> = mutableListOf()
 
     init {
         paint.isAntiAlias = true
-        paint.color = -1
+        paint.isDither = true
+        paint.color = -1202
         paint.style = Paint.Style.STROKE
         paint.strokeJoin = Paint.Join.ROUND
         paint.strokeCap = Paint.Cap.ROUND
@@ -24,6 +25,9 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
 
     override fun onDraw(canvas: Canvas?) {
         if (canvas == null) return
+
+        for (mPath in paths)
+            canvas.drawPath(mPath, paint)
 
         canvas.drawPath(path, paint)
     }
@@ -46,8 +50,17 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
                 path.lineTo(x, y)
                 path.moveTo(x, y)
             }
+
+            MotionEvent.ACTION_UP -> {
+                paths.add(path)
+                path = Path()
+            }
         }
         postInvalidate()
         return false
+    }
+
+    fun setColor(color: Int) {
+        paint.color = color
     }
 }
