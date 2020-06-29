@@ -14,4 +14,6 @@
     <color name="cyan">#00FFFF</color>
     <color name="purple">#FF00FF</color>
     <color name="black">#000000</color>
+
+    <color name="divide_color">#F0F0F0</color>
 </resources>
