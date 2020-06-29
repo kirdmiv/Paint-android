@@ -13,6 +13,7 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     private var paint = Paint()
     private var path = Path()
     private val paths: MutableList<Pair<Path, Paint>> = mutableListOf()
+    private val deletedPaths: MutableList<Pair<Path, Paint>> = mutableListOf()
 
     init {
         paint.isAntiAlias = true
@@ -71,5 +72,15 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
         paint.strokeJoin = Paint.Join.ROUND
         paint.strokeCap = Paint.Cap.ROUND
         paint.strokeWidth = 10f
+    }
+
+    fun undo(){
+        if (paths.isNotEmpty())
+            deletedPaths.add(paths.removeAt(paths.lastIndex))
+    }
+
+    fun redo() {
+        if (deletedPaths.isNotEmpty())
+            paths.add(deletedPaths.removeAt(deletedPaths.lastIndex))
     }
 }
