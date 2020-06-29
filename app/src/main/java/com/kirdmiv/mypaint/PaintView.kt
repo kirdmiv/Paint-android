@@ -5,13 +5,14 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 
 class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
-    private val paint = Paint()
+    private var paint = Paint()
     private var path = Path()
-    private val paths: MutableList<Path> = mutableListOf()
+    private val paths: MutableList<Pair<Path, Paint>> = mutableListOf()
 
     init {
         paint.isAntiAlias = true
@@ -26,8 +27,8 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     override fun onDraw(canvas: Canvas?) {
         if (canvas == null) return
 
-        for (mPath in paths)
-            canvas.drawPath(mPath, paint)
+        for (state in paths)
+            canvas.drawPath(state.first, state.second)
 
         canvas.drawPath(path, paint)
     }
@@ -52,8 +53,9 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
             }
 
             MotionEvent.ACTION_UP -> {
-                paths.add(path)
+                paths.add(Pair(path, paint))
                 path = Path()
+                Log.d("PaintView.kt -- ACTION_UP", "new path")
             }
         }
         postInvalidate()
@@ -61,6 +63,13 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     }
 
     fun setColor(color: Int) {
+        paint = Paint()
+        paint.isAntiAlias = true
+        paint.isDither = true
         paint.color = color
+        paint.style = Paint.Style.STROKE
+        paint.strokeJoin = Paint.Join.ROUND
+        paint.strokeCap = Paint.Cap.ROUND
+        paint.strokeWidth = 10f
     }
 }
