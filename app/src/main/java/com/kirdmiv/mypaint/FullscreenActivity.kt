@@ -15,7 +15,7 @@ import android.widget.TextView
  * status bar and navigation/system bar) with user interaction.
  */
 class FullscreenActivity : AppCompatActivity() {
-    private lateinit var fullscreenContent: TextView
+    private lateinit var fullscreenContent: PaintView
     private lateinit var fullscreenContentControls: LinearLayout
     private val hideHandler = Handler()
 
@@ -70,8 +70,8 @@ class FullscreenActivity : AppCompatActivity() {
         isFullscreen = true
 
         // Set up the user interaction to manually show or hide the system UI.
-        fullscreenContent = findViewById(R.id.fullscreen_content)
-        fullscreenContent.setOnClickListener { toggle() }
+        fullscreenContent = findViewById(R.id.paintV)
+        fullscreenContent.setOnClickListener { }
 
         fullscreenContentControls = findViewById(R.id.fullscreen_content_controls)
 
