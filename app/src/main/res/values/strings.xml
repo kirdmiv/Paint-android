@@ -5,4 +5,7 @@
     <string name="customize">Customize</string>
     <string name="undo_button">undo button</string>
     <string name="thickness">Thickness:</string>
+    <string name="rectangle">Rectangle</string>
+    <string name="oval">Oval</string>
+    <string name="triangle">Triangle</string>
 </resources>
