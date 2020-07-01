@@ -77,4 +77,22 @@
         app:layout_constraintStart_toEndOf="@id/color_purple"
         app:layout_constraintTop_toBottomOf="@id/color_blue" />
 
+    <ImageButton
+        android:id="@+id/undo_btn"
+        android:layout_width="@dimen/color_btn_size"
+        android:layout_height="@dimen/color_btn_size"
+        android:src="@drawable/ic_baseline_undo_24"
+        app:layout_constraintTop_toBottomOf="@id/div1"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/undo_button" />
+
+    <ImageButton
+        android:id="@+id/redo_btn"
+        android:layout_width="@dimen/color_btn_size"
+        android:layout_height="@dimen/color_btn_size"
+        android:src="@drawable/ic_baseline_redo_24"
+        app:layout_constraintTop_toBottomOf="@id/undo_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/undo_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

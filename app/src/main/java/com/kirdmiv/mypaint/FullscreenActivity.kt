@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -187,6 +188,18 @@ class FullscreenActivity : AppCompatActivity() {
         bottomSheetView.findViewById<Button>(R.id.color_black)
             .setOnClickListener {
                 paint.setColor(getColor(R.color.black))
+                dialog.dismiss()
+            }
+
+        bottomSheetView.findViewById<ImageButton>(R.id.undo_btn)
+            .setOnClickListener {
+                paint.undo()
+                dialog.dismiss()
+            }
+
+        bottomSheetView.findViewById<ImageButton>(R.id.redo_btn)
+            .setOnClickListener {
+                paint.redo()
                 dialog.dismiss()
             }
 
