@@ -211,6 +211,24 @@ class FullscreenActivity : AppCompatActivity() {
                 )
             )
 
+        bottomSheetView.findViewById<ImageButton>(R.id.rect_btn)
+            .setOnClickListener {
+                paint.paintingMode = 1
+                dialog.dismiss()
+            }
+
+        bottomSheetView.findViewById<ImageButton>(R.id.oval_btn)
+            .setOnClickListener {
+                paint.paintingMode = 2
+                dialog.dismiss()
+            }
+
+        bottomSheetView.findViewById<ImageButton>(R.id.triangle_btn)
+            .setOnClickListener {
+                paint.paintingMode = 3
+                dialog.dismiss()
+            }
+
         dialog.setContentView(bottomSheetView)
         dialog.show()
     }

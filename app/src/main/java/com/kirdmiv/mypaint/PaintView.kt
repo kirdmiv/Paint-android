@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -20,6 +19,7 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     private val deletedPaths: MutableList<Pair<Path, Paint>> = mutableListOf()
     private var startX = 0f
     private var startY = 0f
+    var paintingMode: Int = 0
 
     init {
         paint.isAntiAlias = true
@@ -59,18 +59,19 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
             MotionEvent.ACTION_DOWN -> {
                 startX = x
                 startY = y
+                if (paintingMode == 0) {
+                    path.moveTo(x, y)
+                    path.lineTo(x, y)
+                }
                 postInvalidate()
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
-                path.reset()
-                path.addRect(
-                    min(startX, x),
-                    min(startY, y),
-                    max(startX, x),
-                    max(startY, y),
-                    Path.Direction.CCW
-                )
+                when (paintingMode) {
+                    1 -> drawRect(x, y)
+                    2 -> drawOval(x, y)
+                    else -> drawDefault(x, y)
+                }
             }
 
             MotionEvent.ACTION_UP -> {
@@ -121,5 +122,32 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
         if (deletedPaths.isNotEmpty())
             paths.add(deletedPaths.removeAt(deletedPaths.lastIndex))
         postInvalidate()
+    }
+
+    private fun drawRect(x: Float, y: Float){
+        path.reset()
+        path.addRect(
+            min(startX, x),
+            min(startY, y),
+            max(startX, x),
+            max(startY, y),
+            Path.Direction.CCW
+        )
+    }
+
+    private fun drawOval(x: Float, y: Float){
+        path.reset()
+        path.addOval(
+            min(startX, x),
+            min(startY, y),
+            max(startX, x),
+            max(startY, y),
+            Path.Direction.CCW
+        )
+    }
+
+    private fun drawDefault(x: Float, y: Float){
+        path.lineTo(x, y)
+        path.moveTo(x, y)
     }
 }
