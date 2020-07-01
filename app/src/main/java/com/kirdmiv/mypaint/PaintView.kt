@@ -4,10 +4,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import java.lang.Float.max
+import java.lang.Float.min
 
 class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     private var paint = Paint()
@@ -15,6 +18,8 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     private var path = Path()
     private val paths: MutableList<Pair<Path, Paint>> = mutableListOf()
     private val deletedPaths: MutableList<Pair<Path, Paint>> = mutableListOf()
+    private var startX = 0f
+    private var startY = 0f
 
     init {
         paint.isAntiAlias = true
@@ -52,14 +57,20 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                path.moveTo(x, y)
-                path.lineTo(x, y)
+                startX = x
+                startY = y
                 postInvalidate()
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
-                path.lineTo(x, y)
-                path.moveTo(x, y)
+                path.reset()
+                path.addRect(
+                    min(startX, x),
+                    min(startY, y),
+                    max(startX, x),
+                    max(startY, y),
+                    Path.Direction.CCW
+                )
             }
 
             MotionEvent.ACTION_UP -> {
