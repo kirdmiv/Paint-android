@@ -103,10 +103,12 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     fun undo(){
         if (paths.isNotEmpty())
             deletedPaths.add(paths.removeAt(paths.lastIndex))
+        postInvalidate()
     }
 
     fun redo() {
         if (deletedPaths.isNotEmpty())
             paths.add(deletedPaths.removeAt(deletedPaths.lastIndex))
+        postInvalidate()
     }
 }
