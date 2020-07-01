@@ -1,9 +1,7 @@
 package com.kirdmiv.mypaint
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -156,5 +154,14 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     private fun drawDefault(x: Float, y: Float){
         path.lineTo(x, y)
         path.moveTo(x, y)
+    }
+
+    //rotate current path by degrees via computing center
+    private fun rotate(degrees: Float){
+        val matrix = Matrix()
+        val bounds = RectF();
+        path.computeBounds(bounds, true);
+        matrix.postRotate(degrees, bounds.centerX(), bounds.centerY())
+        path.transform(matrix)
     }
 }
