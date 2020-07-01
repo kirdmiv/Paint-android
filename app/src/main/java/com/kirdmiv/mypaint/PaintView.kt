@@ -70,6 +70,7 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
                 when (paintingMode) {
                     1 -> drawRect(x, y)
                     2 -> drawOval(x, y)
+                    3 -> drawLine(x, y)
                     else -> drawDefault(x, y)
                 }
             }
@@ -144,6 +145,12 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
             max(startY, y),
             Path.Direction.CCW
         )
+    }
+
+    private fun drawLine(x: Float, y: Float){
+        path.reset()
+        path.moveTo(startX, startY)
+        path.lineTo(x, y)
     }
 
     private fun drawDefault(x: Float, y: Float){
