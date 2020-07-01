@@ -8,4 +8,5 @@
     <string name="rectangle">Rectangle</string>
     <string name="oval">Oval</string>
     <string name="triangle">Triangle</string>
+    <string name="default_line">Default line</string>
 </resources>

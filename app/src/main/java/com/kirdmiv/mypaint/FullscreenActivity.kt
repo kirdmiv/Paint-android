@@ -229,6 +229,12 @@ class FullscreenActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
 
+        bottomSheetView.findViewById<ImageButton>(R.id.line_btn)
+            .setOnClickListener {
+                paint.paintingMode = 0
+                dialog.dismiss()
+            }
+
         dialog.setContentView(bottomSheetView)
         dialog.show()
     }
