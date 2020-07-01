@@ -74,6 +74,18 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
         paint.strokeWidth = 10f
     }
 
+    fun setThickness(thickness: Int) {
+        paint = Paint()
+        paint.isAntiAlias = true
+        paint.isDither = true
+        paint.color = -1301
+        paint.style = Paint.Style.STROKE
+        paint.strokeJoin = Paint.Join.ROUND
+        paint.strokeCap = Paint.Cap.ROUND
+        paint.strokeWidth = thickness.toFloat()
+        Log.d("PaintView.kt -- setThickness", "thickness: $thickness");
+    }
+
     fun undo(){
         if (paths.isNotEmpty())
             deletedPaths.add(paths.removeAt(paths.lastIndex))

@@ -123,6 +123,7 @@
         app:layout_constraintStart_toEndOf="@id/thick_tv"
         app:layout_constraintBottom_toBottomOf="@id/thick_tv"
         android:progress="@integer/default_thickness"
+        android:max="@integer/max_xml"
         android:progressDrawable="@drawable/seekbar_style"
         android:thumb="@drawable/my_thumb"
         />

@@ -4,4 +4,6 @@
     <integer name="min_thickness">5</integer>
     <integer name="step">1</integer>
     <integer name="default_thickness">10</integer>
+    <!-- this value is calculated by max_thickness - min_thickness -->
+    <integer name="max_xml">25</integer>
 </resources>

@@ -5,15 +5,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.lang.Integer.getInteger
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -203,7 +202,38 @@ class FullscreenActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
 
+        bottomSheetView.findViewById<SeekBar>(R.id.thick_sb)
+            .setOnSeekBarChangeListener(MySeekBarListener(
+                paint,
+                resources.getInteger(R.integer.min_thickness),
+                resources.getInteger(R.integer.max_thickness),
+                resources.getInteger(R.integer.step)
+                )
+            )
+
         dialog.setContentView(bottomSheetView)
         dialog.show()
+    }
+
+    class MySeekBarListener(paintView: PaintView, min_thick: Int, max_thick: Int, steps: Int): SeekBar.OnSeekBarChangeListener {
+        private val minThickness = min_thick
+        private val maxThickness = max_thick
+        private val step = steps
+        private val pv = paintView
+
+
+        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                //Log.d("MainActivity.kt -- onProgChanged", "step ${step.toString()}")
+        }
+
+        override fun onStartTrackingTouch(p0: SeekBar?) {
+
+        }
+
+        override fun onStopTrackingTouch(p0: SeekBar?) {
+            p0?.progress?.let {
+                    pv.setThickness(minThickness + (it * step))
+            }
+        }
     }
 }
