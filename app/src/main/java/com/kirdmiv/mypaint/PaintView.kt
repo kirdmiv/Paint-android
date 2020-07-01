@@ -11,6 +11,7 @@ import android.view.View
 
 class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     private var paint = Paint()
+    private var savedPaint = Paint()
     private var path = Path()
     private val paths: MutableList<Pair<Path, Paint>> = mutableListOf()
     private val deletedPaths: MutableList<Pair<Path, Paint>> = mutableListOf()
@@ -23,6 +24,14 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
         paint.strokeJoin = Paint.Join.ROUND
         paint.strokeCap = Paint.Cap.ROUND
         paint.strokeWidth = 10f
+
+        savedPaint.isAntiAlias = true
+        savedPaint.isDither = true
+        savedPaint.color = -1202
+        savedPaint.style = Paint.Style.STROKE
+        savedPaint.strokeJoin = Paint.Join.ROUND
+        savedPaint.strokeCap = Paint.Cap.ROUND
+        savedPaint.strokeWidth = 10f
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -64,25 +73,30 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     }
 
     fun setColor(color: Int) {
+        savedPaint.color = color
         paint = Paint()
-        paint.isAntiAlias = true
-        paint.isDither = true
-        paint.color = color
-        paint.style = Paint.Style.STROKE
-        paint.strokeJoin = Paint.Join.ROUND
-        paint.strokeCap = Paint.Cap.ROUND
-        paint.strokeWidth = 10f
+        paint.isAntiAlias = savedPaint.isAntiAlias
+        paint.isDither = savedPaint.isDither
+        paint.color = savedPaint.color
+        paint.style = savedPaint.style
+        paint.strokeJoin = savedPaint.strokeJoin
+        paint.strokeCap = savedPaint.strokeCap
+        paint.strokeWidth = savedPaint.strokeWidth
+
+        Log.d("PaintView.kt -- setColor", "color : $color")
     }
 
     fun setThickness(thickness: Int) {
+        savedPaint.strokeWidth = thickness.toFloat()
         paint = Paint()
-        paint.isAntiAlias = true
-        paint.isDither = true
-        paint.color = -1301
-        paint.style = Paint.Style.STROKE
-        paint.strokeJoin = Paint.Join.ROUND
-        paint.strokeCap = Paint.Cap.ROUND
-        paint.strokeWidth = thickness.toFloat()
+        paint.isAntiAlias = savedPaint.isAntiAlias
+        paint.isDither = savedPaint.isDither
+        paint.color = savedPaint.color
+        paint.style = savedPaint.style
+        paint.strokeJoin = savedPaint.strokeJoin
+        paint.strokeCap = savedPaint.strokeCap
+        paint.strokeWidth = savedPaint.strokeWidth
+
         Log.d("PaintView.kt -- setThickness", "thickness: $thickness");
     }
 
