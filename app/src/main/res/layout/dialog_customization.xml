@@ -99,7 +99,7 @@
         android:id="@+id/triangle_btn"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
-        android:src="@drawable/triangle"
+        android:src="@drawable/line"
         app:layout_constraintTop_toBottomOf="@id/div1"
         app:layout_constraintStart_toEndOf="@id/rect_btn"
         android:contentDescription="@string/triangle" />
