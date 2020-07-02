@@ -110,7 +110,8 @@
         android:layout_height="@dimen/color_btn_size"
         app:layout_constraintTop_toBottomOf="@id/triangle_btn"
         app:layout_constraintStart_toEndOf="@id/rect_btn"
-        android:contentDescription="@string/default_line" />
+        android:contentDescription="@string/default_line"
+        android:src="@drawable/cur_line"/>
 
     <ImageButton
         android:id="@+id/undo_btn"
