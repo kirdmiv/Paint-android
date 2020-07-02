@@ -9,7 +9,7 @@ import android.view.View
 import java.lang.Float.max
 import java.lang.Float.min
 
-class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
+class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
     private var paint = Paint()
     private var savedPaint = Paint()
     private var path = Path()
@@ -22,11 +22,24 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     init {
         savedPaint.isAntiAlias = true
         savedPaint.isDither = true
-        savedPaint.color = -1202
+        savedPaint.color = 0
         savedPaint.style = Paint.Style.STROKE
         savedPaint.strokeJoin = Paint.Join.ROUND
         savedPaint.strokeCap = Paint.Cap.ROUND
         savedPaint.strokeWidth = 10f
+
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.PaintView,
+            0, 0).apply {
+
+            try {
+                savedPaint.color = getColor(R.styleable.PaintView_defaultColor, 0)
+                savedPaint.strokeWidth = getFloat(R.styleable.PaintView_defaultThickness, 10f)
+            } finally {
+                recycle()
+            }
+        }
 
         applyPaint()
     }

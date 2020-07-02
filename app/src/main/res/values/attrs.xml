@@ -9,4 +9,9 @@
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="PaintView">
+        <attr name="defaultColor" format="color"/>
+        <attr name="defaultThickness" format="float"/>
+    </declare-styleable>
+
 </resources>
