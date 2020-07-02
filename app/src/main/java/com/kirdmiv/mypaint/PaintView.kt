@@ -20,14 +20,6 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
     var paintingMode: Int = 0
 
     init {
-        paint.isAntiAlias = true
-        paint.isDither = true
-        paint.color = -1202
-        paint.style = Paint.Style.STROKE
-        paint.strokeJoin = Paint.Join.ROUND
-        paint.strokeCap = Paint.Cap.ROUND
-        paint.strokeWidth = 10f
-
         savedPaint.isAntiAlias = true
         savedPaint.isDither = true
         savedPaint.color = -1202
@@ -35,6 +27,8 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
         savedPaint.strokeJoin = Paint.Join.ROUND
         savedPaint.strokeCap = Paint.Cap.ROUND
         savedPaint.strokeWidth = 10f
+
+        applyPaint()
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -85,28 +79,14 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
 
     fun setColor(color: Int) {
         savedPaint.color = color
-        paint = Paint()
-        paint.isAntiAlias = savedPaint.isAntiAlias
-        paint.isDither = savedPaint.isDither
-        paint.color = savedPaint.color
-        paint.style = savedPaint.style
-        paint.strokeJoin = savedPaint.strokeJoin
-        paint.strokeCap = savedPaint.strokeCap
-        paint.strokeWidth = savedPaint.strokeWidth
+        applyPaint()
 
         Log.d("PaintView.kt -- setColor", "color : $color")
     }
 
     fun setThickness(thickness: Int) {
         savedPaint.strokeWidth = thickness.toFloat()
-        paint = Paint()
-        paint.isAntiAlias = savedPaint.isAntiAlias
-        paint.isDither = savedPaint.isDither
-        paint.color = savedPaint.color
-        paint.style = savedPaint.style
-        paint.strokeJoin = savedPaint.strokeJoin
-        paint.strokeCap = savedPaint.strokeCap
-        paint.strokeWidth = savedPaint.strokeWidth
+        applyPaint()
 
         Log.d("PaintView.kt -- setThickness", "thickness: $thickness");
     }
@@ -163,5 +143,16 @@ class PaintView(context: Context, atr: AttributeSet): View(context, atr) {
         path.computeBounds(bounds, true);
         matrix.postRotate(degrees, bounds.centerX(), bounds.centerY())
         path.transform(matrix)
+    }
+
+    private fun applyPaint(){
+        paint = Paint()
+        paint.isAntiAlias = savedPaint.isAntiAlias
+        paint.isDither = savedPaint.isDither
+        paint.color = savedPaint.color
+        paint.style = savedPaint.style
+        paint.strokeJoin = savedPaint.strokeJoin
+        paint.strokeCap = savedPaint.strokeCap
+        paint.strokeWidth = savedPaint.strokeWidth
     }
 }
