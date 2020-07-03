@@ -91,6 +91,11 @@ class FullscreenActivity : AppCompatActivity() {
         delayedHide(0)
     }
 
+    override fun onStart() {
+        super.onStart()
+        hide()
+    }
+
     private fun toggle() {
         if (isFullscreen) {
             hide()
