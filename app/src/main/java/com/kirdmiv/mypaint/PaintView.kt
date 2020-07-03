@@ -173,5 +173,6 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
         path.reset()
         paths.clear()
         deletedPaths.clear()
+        postInvalidate()
     }
 }
