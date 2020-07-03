@@ -168,4 +168,10 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
         paint.strokeCap = savedPaint.strokeCap
         paint.strokeWidth = savedPaint.strokeWidth
     }
+
+    private fun clear(){
+        path.reset()
+        paths.clear()
+        deletedPaths.clear()
+    }
 }
