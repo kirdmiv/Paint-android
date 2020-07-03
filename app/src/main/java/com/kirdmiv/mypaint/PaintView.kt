@@ -2,12 +2,16 @@ package com.kirdmiv.mypaint
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.os.Environment
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import java.io.File
+import java.io.FileOutputStream
 import java.lang.Float.max
 import java.lang.Float.min
+
 
 class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
     private var paint = Paint()
@@ -169,10 +173,26 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
         paint.strokeWidth = savedPaint.strokeWidth
     }
 
-    private fun clear(){
+    fun clear(){
         path.reset()
         paths.clear()
         deletedPaths.clear()
         postInvalidate()
     }
+/*
+    fun saveImage() {
+        try {
+            val filename: String = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString()
+            val f = File(filename, "myImage.png")
+            f.createNewFile()
+            println("file created $f")
+            val out = FileOutputStream(f)
+            val bitmap: Bitmap = Bi
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+ */
 }
