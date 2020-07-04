@@ -1,5 +1,6 @@
 package com.kirdmiv.mypaint
 
+import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -80,6 +81,9 @@ class FullscreenActivity : AppCompatActivity() {
         paintControls = findViewById(R.id.fullscreen_content_controls)
 
         hide()
+
+        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            0)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

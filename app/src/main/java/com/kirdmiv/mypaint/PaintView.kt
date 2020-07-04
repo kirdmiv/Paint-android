@@ -1,7 +1,9 @@
 package com.kirdmiv.mypaint
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.media.MediaScannerConnection
 import android.os.Environment
 import android.util.AttributeSet
 import android.util.Log
@@ -11,9 +13,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.lang.Float.max
 import java.lang.Float.min
+import kotlin.concurrent.thread
 
 
-class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
+class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var paint = Paint()
     private var savedPaint = Paint()
     private var path = Path()
@@ -21,6 +24,7 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
     private val deletedPaths: MutableList<Pair<Path, Paint>> = mutableListOf()
     private var startX = 0f
     private var startY = 0f
+    private lateinit var picture: Bitmap
     var paintingMode: Int = 0
 
     init {
@@ -35,7 +39,8 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.PaintView,
-            0, 0).apply {
+            0, 0
+        ).apply {
 
             try {
                 savedPaint.color = getColor(R.styleable.PaintView_defaultColor, 0)
@@ -51,10 +56,13 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
     override fun onDraw(canvas: Canvas?) {
         if (canvas == null) return
 
+        picture = Bitmap.createBitmap(canvas.width, canvas.height, Bitmap.Config.ARGB_8888)
+        val myCanvas = Canvas(picture)
         for (state in paths)
-            canvas.drawPath(state.first, state.second)
+            myCanvas.drawPath(state.first, state.second)
 
-        canvas.drawPath(path, paint)
+        myCanvas.drawPath(path, paint)
+        canvas.drawBitmap(picture, 0f, 0f, null)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -85,6 +93,7 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
             }
 
             MotionEvent.ACTION_UP -> {
+                // saveImage()
                 paths.add(Pair(path, paint))
                 path = Path()
                 Log.d("PaintView.kt -- ACTION_UP", "new path")
@@ -108,7 +117,7 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
         Log.d("PaintView.kt -- setThickness", "thickness: $thickness");
     }
 
-    fun undo(){
+    fun undo() {
         if (paths.isNotEmpty())
             deletedPaths.add(paths.removeAt(paths.lastIndex))
         postInvalidate()
@@ -120,7 +129,7 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
         postInvalidate()
     }
 
-    private fun drawRect(x: Float, y: Float){
+    private fun drawRect(x: Float, y: Float) {
         path.reset()
         path.addRect(
             min(startX, x),
@@ -131,7 +140,7 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
         )
     }
 
-    private fun drawOval(x: Float, y: Float){
+    private fun drawOval(x: Float, y: Float) {
         path.reset()
         path.addOval(
             min(startX, x),
@@ -142,19 +151,19 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
         )
     }
 
-    private fun drawLine(x: Float, y: Float){
+    private fun drawLine(x: Float, y: Float) {
         path.reset()
         path.moveTo(startX, startY)
         path.lineTo(x, y)
     }
 
-    private fun drawDefault(x: Float, y: Float){
+    private fun drawDefault(x: Float, y: Float) {
         path.lineTo(x, y)
-        path.moveTo(x, y)
+        //path.moveTo(x, y)
     }
 
     //rotate current path by degrees via computing center
-    private fun rotate(degrees: Float){
+    private fun rotate(degrees: Float) {
         val matrix = Matrix()
         val bounds = RectF();
         path.computeBounds(bounds, true);
@@ -162,7 +171,7 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
         path.transform(matrix)
     }
 
-    private fun applyPaint(){
+    private fun applyPaint() {
         paint = Paint()
         paint.isAntiAlias = savedPaint.isAntiAlias
         paint.isDither = savedPaint.isDither
@@ -173,26 +182,31 @@ class PaintView(context: Context, attrs: AttributeSet): View(context, attrs) {
         paint.strokeWidth = savedPaint.strokeWidth
     }
 
-    fun clear(){
+    fun clear() {
         path.reset()
         paths.clear()
         deletedPaths.clear()
         postInvalidate()
     }
-/*
+
     fun saveImage() {
         try {
-            val filename: String = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString()
+            val filename: String =
+                context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString()
             val f = File(filename, "myImage.png")
             f.createNewFile()
             println("file created $f")
             val out = FileOutputStream(f)
-            val bitmap: Bitmap = Bi
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out)
+            thread {
+                picture.compress(Bitmap.CompressFormat.PNG, 90, out)
+                out.flush()
+                out.close()
+                MediaScannerConnection.scanFile(context,
+                    arrayOf(f.absolutePath), null, null);
+                println("compressed???")
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-
- */
 }
