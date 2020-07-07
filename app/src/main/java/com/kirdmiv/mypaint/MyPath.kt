@@ -34,7 +34,26 @@ class MyPath() : Path() {
 
     override fun addOval(left: Float, top: Float, right: Float, bottom: Float, dir: Direction) {
         super.addOval(left, top, right, bottom, dir)
+        points.add(PathEvent('M', left, (top + bottom) / 2f))
 
+        points.add(AEevnt(
+            (right - left) / 2f,
+            (top - bottom) / 2f,
+            0f,
+            largeArcFlag = true,
+            sweepFlag = false,
+            x = right - left,
+            y = 0f
+        ))
+        points.add(AEevnt(
+            (right - left) / 2f,
+            (top - bottom) / 2f,
+            0f,
+            largeArcFlag = true,
+            sweepFlag = false,
+            x = left - right,
+            y = 0f
+        ))
     }
 
     override fun toString(): String {
