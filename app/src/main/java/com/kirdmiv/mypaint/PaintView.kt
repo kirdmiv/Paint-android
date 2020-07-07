@@ -3,20 +3,25 @@ package com.kirdmiv.mypaint
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.graphics.*
-import android.media.MediaScannerConnection
+import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import android.os.FileUtils
+import android.provider.MediaStore
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.core.net.toFile
 import java.io.File
-import java.io.FileOutputStream
+import java.io.IOException
 import java.lang.Float.max
 import java.lang.Float.min
-import kotlin.concurrent.thread
 
 
 class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
@@ -193,24 +198,50 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         postInvalidate()
     }
 
+
+    @Suppress("NAME_SHADOWING")
     fun saveImage() {
-        try {
-            val filename: String =
-                context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString()
-            val f = File(filename, "myImage.png")
-            f.createNewFile()
-            println("file created $f")
-            val out = FileOutputStream(f)
-            thread {
-                picture.compress(Bitmap.CompressFormat.PNG, 90, out)
-                out.flush()
-                out.close()
-                MediaScannerConnection.scanFile(context,
-                    arrayOf(f.absolutePath), null, null);
-                println("compressed???")
+        val relativeLocation = Environment.DIRECTORY_PICTURES + File.separator + "Paint"
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, System.currentTimeMillis().toString())
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(MediaStore.MediaColumns.RELATIVE_PATH, relativeLocation)
+                put(MediaStore.MediaColumns.IS_PENDING, 1)
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        }
+
+        val resolver = context.contentResolver
+
+        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        try {
+            uri?.let { uri ->
+                val stream = resolver.openOutputStream(uri)
+
+                stream?.let { stream ->
+                    if (!picture.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
+                        throw IOException("Failed to save bitmap.")
+                    } else {
+                        val file = File(uri.path!!)
+                        Toast.makeText(
+                            context,
+                            "Image saved to ${uri.path}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } ?: throw IOException("Failed to get output stream.")
+
+            } ?: throw IOException("Failed to create new MediaStore record")
+
+        } catch (e: IOException) {
+            if (uri != null) {
+                resolver.delete(uri, null, null)
+            }
+            throw IOException(e)
+        } finally {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
         }
     }
 
@@ -219,7 +250,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         for (state in paths)
             vectorPath += state.first.toString()
         vectorPath += path.toString()
-        Log.d("PaintView.kt -- copyvectorPath()", vectorPath)
+        Log.d("PaintView.kt -- copyVectorPath()", vectorPath)
         val clipBoard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip: ClipData = ClipData.newPlainText("vector path", vectorPath)
         clipBoard.setPrimaryClip(clip)
