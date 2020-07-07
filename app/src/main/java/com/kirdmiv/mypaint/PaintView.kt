@@ -210,4 +210,11 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
             e.printStackTrace()
         }
     }
+
+    fun copySvgPath(){
+        var svgPath: String = ""
+        for (state in paths)
+            svgPath += state.first.toString()
+        svgPath += path.toString()
+    }
 }

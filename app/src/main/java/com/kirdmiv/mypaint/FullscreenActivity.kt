@@ -244,6 +244,30 @@ class FullscreenActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
 
+        bottomSheetView.findViewById<ImageView>(R.id.erase_btn)
+            .setOnClickListener {
+                paint.setColor(getColor(R.color.white))
+                dialog.dismiss()
+            }
+
+        bottomSheetView.findViewById<ImageButton>(R.id.delete_btn)
+            .setOnClickListener {
+                paint.clear()
+                dialog.dismiss()
+            }
+
+        bottomSheetView.findViewById<ImageButton>(R.id.save_btn)
+            .setOnClickListener {
+                paint.saveImage()
+                dialog.dismiss()
+            }
+
+        bottomSheetView.findViewById<ImageButton>(R.id.save_svg_btn)
+            .setOnClickListener {
+                paint.copySvgPath()
+                dialog.dismiss()
+            }
+
         dialog.setContentView(bottomSheetView)
         dialog.show()
     }
