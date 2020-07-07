@@ -19,9 +19,9 @@ import kotlin.concurrent.thread
 class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var paint = Paint()
     private var savedPaint = Paint()
-    private var path = Path()
-    private val paths: MutableList<Pair<Path, Paint>> = mutableListOf()
-    private val deletedPaths: MutableList<Pair<Path, Paint>> = mutableListOf()
+    private var path = MyPath()
+    private val paths: MutableList<Pair<MyPath, Paint>> = mutableListOf()
+    private val deletedPaths: MutableList<Pair<MyPath, Paint>> = mutableListOf()
     private var startX = 0f
     private var startY = 0f
     private lateinit var picture: Bitmap
@@ -94,8 +94,9 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
             MotionEvent.ACTION_UP -> {
                 // saveImage()
+                Log.d("PaintView.kt -- ACTION_UP", path.toString())
                 paths.add(Pair(path, paint))
-                path = Path()
+                path = MyPath()
                 Log.d("PaintView.kt -- ACTION_UP", "new path")
             }
         }
