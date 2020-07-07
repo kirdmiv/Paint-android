@@ -264,7 +264,7 @@ class FullscreenActivity : AppCompatActivity() {
 
         bottomSheetView.findViewById<ImageButton>(R.id.save_svg_btn)
             .setOnClickListener {
-                paint.copySvgPath()
+                paint.copyVectorPath()
                 dialog.dismiss()
             }
 

@@ -1,6 +1,8 @@
 package com.kirdmiv.mypaint
 
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.*
 import android.media.MediaScannerConnection
@@ -9,6 +11,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 import java.io.File
 import java.io.FileOutputStream
 import java.lang.Float.max
@@ -211,10 +214,19 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
     }
 
-    fun copySvgPath(){
-        var svgPath: String = ""
+    fun copyVectorPath(){
+        var vectorPath: String = ""
         for (state in paths)
-            svgPath += state.first.toString()
-        svgPath += path.toString()
+            vectorPath += state.first.toString()
+        vectorPath += path.toString()
+        Log.d("PaintView.kt -- copyvectorPath()", vectorPath)
+        val clipBoard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip: ClipData = ClipData.newPlainText("vector path", vectorPath)
+        clipBoard.setPrimaryClip(clip)
+        Toast.makeText(
+            context,
+            "Vector path of your drawing copied to clipboard",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
