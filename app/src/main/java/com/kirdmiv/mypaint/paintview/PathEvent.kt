@@ -1,4 +1,4 @@
-package com.kirdmiv.mypaint
+package com.kirdmiv.mypaint.paintview
 
 open class PathEvent(var action: Char, var x: Float, var y: Float) {
     override fun toString(): String {

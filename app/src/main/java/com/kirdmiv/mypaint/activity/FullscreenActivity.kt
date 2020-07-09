@@ -1,4 +1,4 @@
-package com.kirdmiv.mypaint
+package com.kirdmiv.mypaint.activity
 
 import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +14,9 @@ import android.view.animation.AnimationUtils
 import android.widget.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.kirdmiv.mypaint.R
 import com.kirdmiv.mypaint.animation.BounceInt
+import com.kirdmiv.mypaint.paintview.PaintView
 import java.lang.Integer.getInteger
 
 /**

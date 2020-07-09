@@ -1,4 +1,4 @@
-package com.kirdmiv.mypaint
+package com.kirdmiv.mypaint.paintview
 
 import android.annotation.SuppressLint
 import android.content.ClipData
@@ -18,6 +18,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.core.net.toFile
+import com.kirdmiv.mypaint.R
 import java.io.File
 import java.io.IOException
 import java.lang.Float.max

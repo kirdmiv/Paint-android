@@ -1,4 +1,4 @@
-package com.kirdmiv.mypaint
+package com.kirdmiv.mypaint.paintview
 
 import android.graphics.Path
 
