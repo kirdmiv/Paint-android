@@ -195,8 +195,8 @@
         android:src="@drawable/eraser"
         android:padding="15dp"
         android:background="@drawable/btn_normal"
-        app:layout_constraintTop_toBottomOf="@id/div2"
-        app:layout_constraintStart_toEndOf="@id/save_svg_btn"
+        app:layout_constraintTop_toBottomOf="@id/div1"
+        app:layout_constraintStart_toEndOf="@id/straight_line_btn"
         android:contentDescription="@string/erase_button" />
 
     <View
