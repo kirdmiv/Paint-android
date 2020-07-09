@@ -289,6 +289,13 @@ class FullscreenActivity : AppCompatActivity() {
                 dismiss(dialog)
             }
 
+        bottomSheetView.findViewById<ImageButton>(R.id.settings_btn)
+            .setOnClickListener {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                dismiss(dialog)
+            }
+
         dialog.setContentView(bottomSheetView)
         dialog.show()
     }
