@@ -10,9 +10,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.kirdmiv.mypaint.animation.BounceInt
 import java.lang.Integer.getInteger
 
 /**
@@ -170,45 +172,53 @@ class FullscreenActivity : AppCompatActivity() {
 
         bottomSheetView.findViewById<Button>(R.id.color_red)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.setColor(getColor(R.color.red))
-                dialog.dismiss()
+                dismiss(dialog)
             }
         bottomSheetView.findViewById<Button>(R.id.color_blue)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.setColor(getColor(R.color.blue))
-                dialog.dismiss()
+                dismiss(dialog)
             }
         bottomSheetView.findViewById<Button>(R.id.color_green)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.setColor(getColor(R.color.green))
-                dialog.dismiss()
+                dismiss(dialog)
             }
         bottomSheetView.findViewById<Button>(R.id.color_yellow)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.setColor(getColor(R.color.yellow))
-                dialog.dismiss()
+                dismiss(dialog)
             }
         bottomSheetView.findViewById<Button>(R.id.color_purple)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.setColor(getColor(R.color.purple))
-                dialog.dismiss()
+                dismiss(dialog)
             }
         bottomSheetView.findViewById<Button>(R.id.color_black)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.setColor(getColor(R.color.black))
-                dialog.dismiss()
+                dismiss(dialog)
             }
 
         bottomSheetView.findViewById<ImageButton>(R.id.undo_btn)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.undo()
-                dialog.dismiss()
+                dismiss(dialog)
             }
 
         bottomSheetView.findViewById<ImageButton>(R.id.redo_btn)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.redo()
-                dialog.dismiss()
+                dismiss(dialog)
             }
 
         bottomSheetView.findViewById<SeekBar>(R.id.thick_sb)
@@ -222,50 +232,59 @@ class FullscreenActivity : AppCompatActivity() {
 
         bottomSheetView.findViewById<ImageButton>(R.id.rect_btn)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.paintingMode = 1
-                dialog.dismiss()
+                dismiss(dialog)
             }
 
         bottomSheetView.findViewById<ImageButton>(R.id.oval_btn)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.paintingMode = 2
-                dialog.dismiss()
+                dismiss(dialog)
             }
 
         bottomSheetView.findViewById<ImageButton>(R.id.triangle_btn)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.paintingMode = 3
-                dialog.dismiss()
+                dismiss(dialog)
             }
 
         bottomSheetView.findViewById<ImageButton>(R.id.line_btn)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.paintingMode = 0
-                dialog.dismiss()
+                dismiss(dialog)
             }
 
         bottomSheetView.findViewById<ImageView>(R.id.erase_btn)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.setColor(getColor(R.color.white))
-                dialog.dismiss()
+                //dialog.dismiss()
+                dismiss(dialog)
             }
 
         bottomSheetView.findViewById<ImageButton>(R.id.delete_btn)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.clear()
-                dialog.dismiss()
+                dismiss(dialog)
             }
 
         bottomSheetView.findViewById<ImageButton>(R.id.save_btn)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.saveImage()
-                dialog.dismiss()
+                dismiss(dialog)
             }
 
         bottomSheetView.findViewById<ImageButton>(R.id.save_svg_btn)
             .setOnClickListener {
+                tapAnimation(it)
                 paint.copyVectorPath()
-                dialog.dismiss()
+                dismiss(dialog)
             }
 
         dialog.setContentView(bottomSheetView)
@@ -292,5 +311,20 @@ class FullscreenActivity : AppCompatActivity() {
                     pv.setThickness(minThickness + (it * step))
             }
         }
+    }
+
+    private fun tapAnimation(v: View){
+        val animation = AnimationUtils.loadAnimation(this, R.anim.bounce)
+        val interpolator = BounceInt(0.2, 10.0)
+        animation.interpolator = interpolator
+        //v.animation = animation
+        v.startAnimation(animation)
+        v.invalidate()
+        Log.d("MainActivity.kt -- tapAnimation", "ok?")
+    }
+
+    private fun dismiss(dialog: BottomSheetDialog){
+        return
+        dialog.dismiss()
     }
 }
