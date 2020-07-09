@@ -12,6 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kirdmiv.mypaint.R
@@ -333,7 +334,9 @@ class FullscreenActivity : AppCompatActivity() {
     }
 
     private fun dismiss(dialog: BottomSheetDialog){
-        return
-        dialog.dismiss()
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
+        val dismiss = sharedPreferences.getBoolean("auto-dismiss", false)
+        if (dismiss)
+            dialog.dismiss()
     }
 }
