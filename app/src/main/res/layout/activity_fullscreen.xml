@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF"
-    tools:context=".FullscreenActivity">
+    tools:context=".activity.FullscreenActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <com.kirdmiv.mypaint.PaintView
+    <com.kirdmiv.mypaint.paintview.PaintView
         android:id="@+id/paintV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
