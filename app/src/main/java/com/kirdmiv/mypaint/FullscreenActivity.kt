@@ -170,37 +170,37 @@ class FullscreenActivity : AppCompatActivity() {
                 findViewById(R.id.bottom_sheet)
             )
 
-        bottomSheetView.findViewById<Button>(R.id.color_red)
+        bottomSheetView.findViewById<ImageButton>(R.id.color_red)
             .setOnClickListener {
                 tapAnimation(it)
                 paint.setColor(getColor(R.color.red))
                 dismiss(dialog)
             }
-        bottomSheetView.findViewById<Button>(R.id.color_blue)
+        bottomSheetView.findViewById<ImageButton>(R.id.color_blue)
             .setOnClickListener {
                 tapAnimation(it)
                 paint.setColor(getColor(R.color.blue))
                 dismiss(dialog)
             }
-        bottomSheetView.findViewById<Button>(R.id.color_green)
+        bottomSheetView.findViewById<ImageButton>(R.id.color_green)
             .setOnClickListener {
                 tapAnimation(it)
                 paint.setColor(getColor(R.color.green))
                 dismiss(dialog)
             }
-        bottomSheetView.findViewById<Button>(R.id.color_yellow)
+        bottomSheetView.findViewById<ImageButton>(R.id.color_yellow)
             .setOnClickListener {
                 tapAnimation(it)
                 paint.setColor(getColor(R.color.yellow))
                 dismiss(dialog)
             }
-        bottomSheetView.findViewById<Button>(R.id.color_purple)
+        bottomSheetView.findViewById<ImageButton>(R.id.color_purple)
             .setOnClickListener {
                 tapAnimation(it)
                 paint.setColor(getColor(R.color.purple))
                 dismiss(dialog)
             }
-        bottomSheetView.findViewById<Button>(R.id.color_black)
+        bottomSheetView.findViewById<ImageButton>(R.id.color_black)
             .setOnClickListener {
                 tapAnimation(it)
                 paint.setColor(getColor(R.color.black))
@@ -244,7 +244,7 @@ class FullscreenActivity : AppCompatActivity() {
                 dismiss(dialog)
             }
 
-        bottomSheetView.findViewById<ImageButton>(R.id.triangle_btn)
+        bottomSheetView.findViewById<ImageButton>(R.id.straight_line_btn)
             .setOnClickListener {
                 tapAnimation(it)
                 paint.paintingMode = 3

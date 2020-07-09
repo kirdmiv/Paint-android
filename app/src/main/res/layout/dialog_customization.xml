@@ -29,59 +29,72 @@
         android:background="@color/divide_color"
         />
 
-    <Button
+    <ImageButton
         android:id="@+id/color_red"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
-        android:background="@color/red"
+        android:background="@drawable/btn_normal"
+        android:src="@color/red"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/div1" />
+        app:layout_constraintTop_toBottomOf="@id/div1"
+        android:contentDescription="@string/red_color" />
 
-    <Button
+    <ImageButton
         android:id="@+id/color_blue"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
-        android:background="@color/blue"
+        android:src="@color/blue"
+        android:background="@drawable/btn_normal"
         app:layout_constraintStart_toEndOf="@id/color_red"
-        app:layout_constraintTop_toBottomOf="@id/div1" />
+        app:layout_constraintTop_toBottomOf="@id/div1"
+        android:contentDescription="@string/blue_color" />
 
-    <Button
+    <ImageButton
         android:id="@+id/color_green"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
-        android:background="@color/green"
+        android:src="@color/green"
+        android:background="@drawable/btn_normal"
         app:layout_constraintStart_toEndOf="@id/color_blue"
-        app:layout_constraintTop_toBottomOf="@id/div1" />
+        app:layout_constraintTop_toBottomOf="@id/div1"
+        android:contentDescription="@string/green_color" />
 
-    <Button
+    <ImageButton
         android:id="@+id/color_yellow"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
-        android:background="@color/yellow"
+        android:src="@color/yellow"
+        android:background="@drawable/btn_normal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/color_red" />
+        app:layout_constraintTop_toBottomOf="@id/color_red"
+        android:contentDescription="@string/yellow_color" />
 
-    <Button
+    <ImageButton
         android:id="@+id/color_purple"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
-        android:background="@color/purple"
+        android:src="@color/purple"
+        android:background="@drawable/btn_normal"
         app:layout_constraintStart_toEndOf="@id/color_yellow"
-        app:layout_constraintTop_toBottomOf="@id/color_blue" />
+        app:layout_constraintTop_toBottomOf="@id/color_blue"
+        android:contentDescription="@string/purple_color" />
 
-    <Button
+    <ImageButton
         android:id="@+id/color_black"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
-        android:background="@color/black"
+        android:src="@color/black"
+        android:background="@drawable/btn_normal"
         app:layout_constraintStart_toEndOf="@id/color_purple"
-        app:layout_constraintTop_toBottomOf="@id/color_blue" />
+        app:layout_constraintTop_toBottomOf="@id/color_blue"
+        android:contentDescription="@string/black_color" />
 
     <ImageButton
         android:id="@+id/rect_btn"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
         android:src="@drawable/ic_baseline_crop_landscape_24"
+        android:background="@drawable/btn_normal"
         app:layout_constraintTop_toBottomOf="@id/div1"
         app:layout_constraintStart_toEndOf="@id/color_green"
         android:contentDescription="@string/rectangle" />
@@ -91,27 +104,30 @@
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
         android:src="@drawable/oval"
+        android:background="@drawable/btn_normal"
         app:layout_constraintTop_toBottomOf="@id/rect_btn"
         app:layout_constraintStart_toEndOf="@id/color_green"
         android:contentDescription="@string/oval" />
 
     <ImageButton
-        android:id="@+id/triangle_btn"
+        android:id="@+id/straight_line_btn"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
         android:src="@drawable/line"
+        android:background="@drawable/btn_normal"
         app:layout_constraintTop_toBottomOf="@id/div1"
         app:layout_constraintStart_toEndOf="@id/rect_btn"
-        android:contentDescription="@string/triangle" />
+        android:contentDescription="@string/straight_line" />
 
     <ImageButton
         android:id="@+id/line_btn"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
-        app:layout_constraintTop_toBottomOf="@id/triangle_btn"
+        app:layout_constraintTop_toBottomOf="@id/straight_line_btn"
         app:layout_constraintStart_toEndOf="@id/rect_btn"
         android:contentDescription="@string/default_line"
-        android:src="@drawable/cur_line"/>
+        android:src="@drawable/cur_line"
+        android:background="@drawable/btn_normal"/>
 
     <View
         android:id="@+id/div2"
@@ -127,6 +143,7 @@
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
         android:src="@drawable/ic_baseline_undo_24"
+        android:background="@drawable/btn_normal"
         app:layout_constraintTop_toBottomOf="@id/div2"
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@string/undo_button" />
@@ -136,36 +153,40 @@
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
         android:src="@drawable/ic_baseline_redo_24"
+        android:background="@drawable/btn_normal"
         app:layout_constraintTop_toBottomOf="@id/div2"
         app:layout_constraintStart_toEndOf="@id/undo_btn"
-        android:contentDescription="@string/undo_button" />
+        android:contentDescription="@string/redo_button" />
 
     <ImageButton
         android:id="@+id/delete_btn"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
         android:src="@drawable/ic_baseline_delete_forever_24"
+        android:background="@drawable/btn_normal"
         app:layout_constraintTop_toBottomOf="@id/div2"
         app:layout_constraintStart_toEndOf="@id/redo_btn"
-        android:contentDescription="@string/undo_button" />
+        android:contentDescription="@string/delete_button" />
 
     <ImageButton
         android:id="@+id/save_btn"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
         android:src="@drawable/ic_baseline_save_24"
+        android:background="@drawable/btn_normal"
         app:layout_constraintTop_toBottomOf="@id/div2"
         app:layout_constraintStart_toEndOf="@id/delete_btn"
-        android:contentDescription="@string/undo_button" />
+        android:contentDescription="@string/save_button" />
 
     <ImageButton
         android:id="@+id/save_svg_btn"
         android:layout_width="@dimen/color_btn_size"
         android:layout_height="@dimen/color_btn_size"
         android:src="@drawable/ic_baseline_save_alt_24"
+        android:background="@drawable/btn_normal"
         app:layout_constraintTop_toBottomOf="@id/div2"
         app:layout_constraintStart_toEndOf="@id/save_btn"
-        android:contentDescription="@string/undo_button" />
+        android:contentDescription="@string/export_vector_path" />
 
     <ImageView
         android:id="@+id/erase_btn"
@@ -176,7 +197,7 @@
         android:background="@drawable/btn_normal"
         app:layout_constraintTop_toBottomOf="@id/div2"
         app:layout_constraintStart_toEndOf="@id/save_svg_btn"
-        android:contentDescription="@string/undo_button" />
+        android:contentDescription="@string/erase_button" />
 
     <View
         android:id="@+id/div3"

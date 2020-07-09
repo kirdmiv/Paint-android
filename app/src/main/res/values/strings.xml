@@ -9,4 +9,16 @@
     <string name="oval">Oval</string>
     <string name="triangle">Triangle</string>
     <string name="default_line">Default line</string>
+    <string name="purple_color">Purple color</string>
+    <string name="black_color">Black color</string>
+    <string name="yellow_color">Yellow color</string>
+    <string name="green_color">Green color</string>
+    <string name="blue_color">Blue color</string>
+    <string name="red_color">Red color</string>
+    <string name="straight_line">Straight line</string>
+    <string name="redo_button">redo button</string>
+    <string name="delete_button">delete button</string>
+    <string name="save_button">save button</string>
+    <string name="export_vector_path">export vector path</string>
+    <string name="erase_button">erase button</string>
 </resources>
