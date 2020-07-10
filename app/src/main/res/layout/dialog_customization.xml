@@ -22,8 +22,8 @@
 
     <ImageButton
         android:id="@+id/settings_btn"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/ic_baseline_settings_24"
         android:background="@drawable/btn_round"
         app:layout_constraintEnd_toStartOf="@id/cancel_btn"
@@ -34,8 +34,8 @@
 
     <ImageButton
         android:id="@+id/cancel_btn"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/ic_baseline_close_24"
         android:background="@drawable/btn_round"
         app:layout_constraintEnd_toEndOf="parent"
