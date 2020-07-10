@@ -17,5 +17,6 @@
 
     <color name="divide_color">#F0F0F0</color>
     <color name="button_normal_background">#E0E0E0</color>
+    <color name="button_pressed_background">#BCBCBC</color>
 
 </resources>
