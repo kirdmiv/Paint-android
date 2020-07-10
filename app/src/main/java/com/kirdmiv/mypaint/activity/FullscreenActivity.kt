@@ -297,6 +297,11 @@ class FullscreenActivity : AppCompatActivity() {
                 dismiss(dialog)
             }
 
+        bottomSheetView.findViewById<ImageButton>(R.id.cancel_btn)
+            .setOnClickListener {
+                dialog.dismiss()
+            }
+
         dialog.setContentView(bottomSheetView)
         dialog.show()
     }

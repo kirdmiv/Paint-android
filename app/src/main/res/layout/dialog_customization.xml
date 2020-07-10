@@ -22,14 +22,25 @@
 
     <ImageButton
         android:id="@+id/settings_btn"
-        android:layout_width="@dimen/corner_radius"
-        android:layout_height="@dimen/corner_radius"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:src="@drawable/ic_baseline_settings_24"
+        app:layout_constraintEnd_toStartOf="@id/cancel_btn"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="2dp"
+        android:layout_marginTop="2dp"
+        android:contentDescription="@string/settings_button" />
+
+    <ImageButton
+        android:id="@+id/cancel_btn"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_baseline_close_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="5dp"
-        />
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="2dp"
+        android:contentDescription="@string/cancel_button" />
 
     <View
         android:id="@+id/div1"
