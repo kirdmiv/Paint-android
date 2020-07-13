@@ -23,6 +23,7 @@ import java.io.File
 import java.io.IOException
 import java.lang.Float.max
 import java.lang.Float.min
+import java.util.*
 
 
 class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
@@ -33,6 +34,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val deletedPaths: MutableList<Pair<MyPath, Paint>> = mutableListOf()
     private var startX = 0f
     private var startY = 0f
+    private var canvasWidth = 0
+    private var canvasHeight = 0
     private lateinit var picture: Bitmap
     var paintingMode: Int = 0
 
@@ -67,6 +70,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         picture = Bitmap.createBitmap(canvas.width, canvas.height, Bitmap.Config.ARGB_8888)
         val myCanvas = Canvas(picture)
+        canvasHeight = canvas.height
+        canvasWidth = canvas.width
         for (state in paths)
             myCanvas.drawPath(state.first, state.second)
 
@@ -246,7 +251,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
     }
 
-    fun copyVectorPath(){
+    fun copyVectorPath() {
         var vectorPath: String = ""
         for (state in paths)
             vectorPath += state.first.toString()
@@ -260,5 +265,25 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
             "Vector path of your drawing copied to clipboard",
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    fun collectSvg(): String {
+        var ans: String = "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
+                "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.0//EN\"\n" +
+                " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n" +
+                "<svg version=\"1.0\" xmlns=\"http://www.w3.org/2000/svg\"\n" +
+                " width=\"${canvasWidth}pt\" height=\"${canvasHeight}pt\" viewBox=\"0 0 $canvasWidth $canvasHeight\"\n" +
+                " preserveAspectRatio=\"xMidYMid meet\">\n" +
+                "<metadata>\n" +
+                "Created by MyPaint 1.0, written by Kirill Ivanov 2020\n" +
+                "</metadata>\n"
+
+        for (state in paths)
+            ans += "<path d=\"${state.first}\" fill=\"none\" " +
+                    "stroke=\"#${Integer.toHexString(state.second.color)
+                        .toUpperCase(Locale.getDefault()).substring(2)}\" stroke-width=\"${state.second.strokeWidth}\"/>\n"
+
+        ans += "</svg>\n"
+        return ans
     }
 }
