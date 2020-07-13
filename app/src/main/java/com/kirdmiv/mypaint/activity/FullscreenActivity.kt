@@ -284,7 +284,6 @@ class FullscreenActivity : AppCompatActivity() {
         bottomSheetView.findViewById<ImageButton>(R.id.save_btn)
             .setOnClickListener {
                 tapAnimation(it)
-                paint.saveImage()
                 saveDialog()
                 dismiss(dialog)
             }
@@ -367,10 +366,12 @@ class FullscreenActivity : AppCompatActivity() {
             }
             .setPositiveButton("PNG") { dialogInterface: DialogInterface, _: Int ->
                 Log.d("FullScreenActivity.kt -- saveDialog", fileName.text.toString())
+                paint.saveImage(fileName.text.toString())
                 dialogInterface.dismiss()
             }
             .setNeutralButton("SVG") { dialogInterface: DialogInterface, _: Int ->
                 Log.d("FullScreenActivity.kt -- saveDialog", fileName.text.toString())
+                paint.saveSvgImage(fileName.text.toString())
                 dialogInterface.dismiss()
             }
         builder.show()

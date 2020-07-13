@@ -21,6 +21,7 @@ import androidx.core.net.toFile
 import com.kirdmiv.mypaint.R
 import java.io.File
 import java.io.IOException
+import java.io.PrintStream
 import java.lang.Float.max
 import java.lang.Float.min
 import java.util.*
@@ -206,10 +207,12 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
 
     @Suppress("NAME_SHADOWING")
-    fun saveImage() {
+    fun saveImage(fileNameGiven: String?) {
+        var fileName = fileNameGiven
+        if (fileName == null) fileName = System.currentTimeMillis().toString()
         val relativeLocation = Environment.DIRECTORY_PICTURES + File.separator + "Paint"
         val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, System.currentTimeMillis().toString())
+            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 put(MediaStore.MediaColumns.RELATIVE_PATH, relativeLocation)
@@ -281,9 +284,56 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         for (state in paths)
             ans += "<path d=\"${state.first}\" fill=\"none\" " +
                     "stroke=\"#${Integer.toHexString(state.second.color)
-                        .toUpperCase(Locale.getDefault()).substring(2)}\" stroke-width=\"${state.second.strokeWidth}\"/>\n"
+                        .toUpperCase(Locale.getDefault())
+                        .substring(2)}\" stroke-width=\"${state.second.strokeWidth}\" stroke-linecap=\"round\"/>\n"
 
         ans += "</svg>\n"
         return ans
+    }
+
+    @Suppress("NAME_SHADOWING")
+    fun saveSvgImage(fileNameGiven: String?) {
+        var fileName = fileNameGiven
+        if (fileName == null) fileName = System.currentTimeMillis().toString()
+        val relativeLocation = Environment.DIRECTORY_PICTURES + File.separator + "Paint"
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/svg+xml")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(MediaStore.MediaColumns.RELATIVE_PATH, relativeLocation)
+                put(MediaStore.MediaColumns.IS_PENDING, 1)
+            }
+        }
+
+        val resolver = context.contentResolver
+
+        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        try {
+            uri?.let { uri ->
+                val stream = resolver.openOutputStream(uri)
+
+                stream?.let { stream ->
+                    PrintStream(stream).print(collectSvg())
+                    val file = File(uri.path!!)
+                    Toast.makeText(
+                        context,
+                        "Image saved to ${uri.path}",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                } ?: throw IOException("Failed to get output stream.")
+
+            } ?: throw IOException("Failed to create new MediaStore record")
+
+        } catch (e: IOException) {
+            if (uri != null) {
+                resolver.delete(uri, null, null)
+            }
+            throw IOException(e)
+        } finally {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
+        }
     }
 }
