@@ -3,7 +3,8 @@
     <PreferenceCategory app:title="Bottom dialog">
         <SwitchPreferenceCompat
             app:key="auto-dismiss"
-            app:title="Dismiss bottom dialog after pressing button"/>
+            app:summary="Dismiss bottom dialog after pressing any button"
+            app:title="Auto dismiss dialog" />
     </PreferenceCategory>
 
 </PreferenceScreen>
