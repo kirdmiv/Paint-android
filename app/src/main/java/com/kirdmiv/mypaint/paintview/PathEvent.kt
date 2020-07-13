@@ -11,7 +11,7 @@ open class PathEvent(var action: Char, var x: Float, var y: Float) {
     }
 }
 
-class AEevnt(
+class AEvent(
     private val rx: Float,
     private val ry: Float,
     private val xAxisRotation: Float,
@@ -24,8 +24,8 @@ class AEevnt(
         return "$action$rx,$ry $xAxisRotation ${largeArcFlag.toInt()},${sweepFlag.toInt()} $x,$y"
     }
 
-    private fun Boolean.toInt() : Int {
-        if (this) return 1;
-        return 0;
+    private fun Boolean.toInt(): Int {
+        if (this) return 1
+        return 0
     }
 }

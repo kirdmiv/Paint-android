@@ -5,19 +5,15 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.graphics.*
-import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.os.FileUtils
 import android.provider.MediaStore
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
-import androidx.core.net.toFile
 import com.kirdmiv.mypaint.R
 import java.io.File
 import java.io.IOException
@@ -109,10 +105,8 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
             MotionEvent.ACTION_UP -> {
                 // saveImage()
-                Log.d("PaintView.kt -- ACTION_UP", path.toString())
                 paths.add(Pair(path, paint))
                 path = MyPath()
-                Log.d("PaintView.kt -- ACTION_UP", "new path")
             }
         }
         postInvalidate()
@@ -130,7 +124,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         savedPaint.strokeWidth = thickness.toFloat()
         applyPaint()
 
-        Log.d("PaintView.kt -- setThickness", "thickness: $thickness");
+        Log.d("PaintView.kt -- setThickness", "thickness: $thickness")
     }
 
     fun undo() {
@@ -178,15 +172,6 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         //path.moveTo(x, y)
     }
 
-    //rotate current path by degrees via computing center
-    private fun rotate(degrees: Float) {
-        val matrix = Matrix()
-        val bounds = RectF();
-        path.computeBounds(bounds, true);
-        matrix.postRotate(degrees, bounds.centerX(), bounds.centerY())
-        path.transform(matrix)
-    }
-
     private fun applyPaint() {
         paint = Paint()
         paint.isAntiAlias = savedPaint.isAntiAlias
@@ -232,7 +217,6 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
                     if (!picture.compress(Bitmap.CompressFormat.PNG, 100, stream)) {
                         throw IOException("Failed to save bitmap.")
                     } else {
-                        val file = File(uri.path!!)
                         Toast.makeText(
                             context,
                             "Image saved to ${uri.path}",
@@ -255,7 +239,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     }
 
     fun copyVectorPath() {
-        var vectorPath: String = ""
+        var vectorPath = ""
         for (state in paths)
             vectorPath += state.first.toString()
         vectorPath += path.toString()
@@ -270,7 +254,7 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         ).show()
     }
 
-    fun collectSvg(): String {
+    private fun collectSvg(): String {
         var ans: String = "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
                 "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.0//EN\"\n" +
                 " \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">\n" +
@@ -315,7 +299,6 @@ class PaintView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
                 stream?.let { stream ->
                     PrintStream(stream).print(collectSvg())
-                    val file = File(uri.path!!)
                     Toast.makeText(
                         context,
                         "Image saved to ${uri.path}",

@@ -2,7 +2,7 @@ package com.kirdmiv.mypaint.paintview
 
 import android.graphics.Path
 
-class MyPath() : Path() {
+class MyPath : Path() {
     private val points: MutableList<PathEvent> = mutableListOf()
 
     override fun lineTo(x: Float, y: Float) {
@@ -17,7 +17,7 @@ class MyPath() : Path() {
 
     override fun addRect(left: Float, top: Float, right: Float, bottom: Float, dir: Direction) {
         super.addRect(left, top, right, bottom, dir)
-        if (dir == Path.Direction.CCW){
+        if (dir == Direction.CCW) {
             points.add(PathEvent('M', left, top))
             points.add(PathEvent('V', left, bottom))
             points.add(PathEvent('H', right, bottom))
@@ -36,29 +36,33 @@ class MyPath() : Path() {
         super.addOval(left, top, right, bottom, dir)
         points.add(PathEvent('M', left, (top + bottom) / 2f))
 
-        points.add(AEevnt(
-            (right - left) / 2f,
-            (top - bottom) / 2f,
-            0f,
-            largeArcFlag = true,
-            sweepFlag = false,
-            x = right - left,
-            y = 0f
-        ))
-        points.add(AEevnt(
-            (right - left) / 2f,
-            (top - bottom) / 2f,
-            0f,
-            largeArcFlag = true,
-            sweepFlag = false,
-            x = left - right,
-            y = 0f
-        ))
+        points.add(
+            AEvent(
+                (right - left) / 2f,
+                (top - bottom) / 2f,
+                0f,
+                largeArcFlag = true,
+                sweepFlag = false,
+                x = right - left,
+                y = 0f
+            )
+        )
+        points.add(
+            AEvent(
+                (right - left) / 2f,
+                (top - bottom) / 2f,
+                0f,
+                largeArcFlag = true,
+                sweepFlag = false,
+                x = left - right,
+                y = 0f
+            )
+        )
     }
 
     override fun toString(): String {
-        var res: String = ""
-        for (event in points){
+        var res = ""
+        for (event in points) {
             res += event.toString()
         }
         return res

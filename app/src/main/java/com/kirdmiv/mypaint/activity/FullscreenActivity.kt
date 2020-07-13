@@ -20,12 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kirdmiv.mypaint.R
 import com.kirdmiv.mypaint.animation.BounceInt
 import com.kirdmiv.mypaint.paintview.PaintView
-import java.lang.Integer.getInteger
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 class FullscreenActivity : AppCompatActivity() {
     private lateinit var paint: PaintView
     private lateinit var paintControls: LinearLayout
@@ -33,11 +28,6 @@ class FullscreenActivity : AppCompatActivity() {
 
     @SuppressLint("InlinedApi")
     private val hidePart2Runnable = Runnable {
-        // Delayed removal of status and navigation bar
-
-        // Note that some of these constants are new as of API 16 (Jelly Bean)
-        // and API 19 (KitKat). It is safe to use them, as they are inlined
-        // at compile-time and do nothing on earlier devices.
         paint.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LOW_PROFILE or
                     View.SYSTEM_UI_FLAG_FULLSCREEN or
@@ -47,30 +37,12 @@ class FullscreenActivity : AppCompatActivity() {
                     View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
     }
     private val showPart2Runnable = Runnable {
-        // Delayed display of UI elements
         supportActionBar?.show()
         paintControls.visibility = View.VISIBLE
     }
     private var isFullscreen: Boolean = false
 
     private val hideRunnable = Runnable { hide() }
-
-    /**
-     * Touch listener to use for in-layout UI controls to delay hiding the
-     * system UI. This is to prevent the jarring behavior of controls going away
-     * while interacting with activity UI.
-     */
-    private val delayHideTouchListener = View.OnTouchListener { view, motionEvent ->
-        when (motionEvent.action) {
-            MotionEvent.ACTION_DOWN -> if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS)
-            }
-            MotionEvent.ACTION_UP -> view.performClick()
-            else -> {
-            }
-        }
-        false
-    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +52,6 @@ class FullscreenActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         isFullscreen = true
-        // Set up the user interaction to manually show or hide the system UI.
         paint = findViewById(R.id.paintV)
         paint.setOnClickListener { }
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { customize(); hide() }
@@ -98,23 +69,12 @@ class FullscreenActivity : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
-        // Trigger the initial hide() shortly after the activity has been
-        // created, to briefly hint to the user that UI controls
-        // are available.
         delayedHide(0)
     }
 
     override fun onStart() {
         super.onStart()
         hide()
-    }
-
-    private fun toggle() {
-        if (isFullscreen) {
-            hide()
-        } else {
-            show()
-        }
     }
 
     private fun hide() {
@@ -126,18 +86,6 @@ class FullscreenActivity : AppCompatActivity() {
         // Schedule a runnable to remove the status and navigation bar after a delay
         hideHandler.removeCallbacks(showPart2Runnable)
         hideHandler.postDelayed(hidePart2Runnable, UI_ANIMATION_DELAY.toLong())
-    }
-
-    private fun show() {
-        // Show the system bar
-        paint.systemUiVisibility =
-            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        isFullscreen = true
-
-        // Schedule a runnable to display UI elements after a delay
-        hideHandler.removeCallbacks(hidePart2Runnable)
-        hideHandler.postDelayed(showPart2Runnable, UI_ANIMATION_DELAY.toLong())
     }
 
     /**
@@ -233,7 +181,6 @@ class FullscreenActivity : AppCompatActivity() {
                 MySeekBarListener(
                     paint,
                     resources.getInteger(R.integer.min_thickness),
-                    resources.getInteger(R.integer.max_thickness),
                     resources.getInteger(R.integer.step)
                 )
             )
@@ -311,10 +258,13 @@ class FullscreenActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    class MySeekBarListener(paintView: PaintView, min_thick: Int, max_thick: Int, steps: Int) :
+    class MySeekBarListener(
+        paintView: PaintView,
+        min_thick: Int,
+        steps: Int
+    ) :
         SeekBar.OnSeekBarChangeListener {
         private val minThickness = min_thick
-        private val maxThickness = max_thick
         private val step = steps
         private val pv = paintView
 
