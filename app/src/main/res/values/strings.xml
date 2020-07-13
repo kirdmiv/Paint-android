@@ -39,4 +39,5 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="settings_button">settings button</string>
     <string name="cancel_button">cancel button</string>
+    <string name="save_image_dialog_hint_edittext">Write here file name without extension</string>
 </resources>

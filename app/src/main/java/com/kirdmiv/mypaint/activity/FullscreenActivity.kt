@@ -3,6 +3,7 @@ package com.kirdmiv.mypaint.activity
 import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +13,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -37,12 +39,12 @@ class FullscreenActivity : AppCompatActivity() {
         // and API 19 (KitKat). It is safe to use them, as they are inlined
         // at compile-time and do nothing on earlier devices.
         paint.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LOW_PROFILE or
-                        View.SYSTEM_UI_FLAG_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            View.SYSTEM_UI_FLAG_LOW_PROFILE or
+                    View.SYSTEM_UI_FLAG_FULLSCREEN or
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
     }
     private val showPart2Runnable = Runnable {
         // Delayed display of UI elements
@@ -87,8 +89,10 @@ class FullscreenActivity : AppCompatActivity() {
 
         hide()
 
-        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            0)
+        requestPermissions(
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            0
+        )
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -127,8 +131,8 @@ class FullscreenActivity : AppCompatActivity() {
     private fun show() {
         // Show the system bar
         paint.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         isFullscreen = true
 
         // Schedule a runnable to display UI elements after a delay
@@ -225,11 +229,12 @@ class FullscreenActivity : AppCompatActivity() {
             }
 
         bottomSheetView.findViewById<SeekBar>(R.id.thick_sb)
-            .setOnSeekBarChangeListener(MySeekBarListener(
-                paint,
-                resources.getInteger(R.integer.min_thickness),
-                resources.getInteger(R.integer.max_thickness),
-                resources.getInteger(R.integer.step)
+            .setOnSeekBarChangeListener(
+                MySeekBarListener(
+                    paint,
+                    resources.getInteger(R.integer.min_thickness),
+                    resources.getInteger(R.integer.max_thickness),
+                    resources.getInteger(R.integer.step)
                 )
             )
 
@@ -280,6 +285,7 @@ class FullscreenActivity : AppCompatActivity() {
             .setOnClickListener {
                 tapAnimation(it)
                 paint.saveImage()
+                saveDialog()
                 dismiss(dialog)
             }
 
@@ -306,7 +312,8 @@ class FullscreenActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    class MySeekBarListener(paintView: PaintView, min_thick: Int, max_thick: Int, steps: Int): SeekBar.OnSeekBarChangeListener {
+    class MySeekBarListener(paintView: PaintView, min_thick: Int, max_thick: Int, steps: Int) :
+        SeekBar.OnSeekBarChangeListener {
         private val minThickness = min_thick
         private val maxThickness = max_thick
         private val step = steps
@@ -314,7 +321,7 @@ class FullscreenActivity : AppCompatActivity() {
 
 
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                //Log.d("MainActivity.kt -- onProgChanged", "step ${step.toString()}")
+            //Log.d("MainActivity.kt -- onProgChanged", "step ${step.toString()}")
         }
 
         override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -323,12 +330,12 @@ class FullscreenActivity : AppCompatActivity() {
 
         override fun onStopTrackingTouch(p0: SeekBar?) {
             p0?.progress?.let {
-                    pv.setThickness(minThickness + (it * step))
+                pv.setThickness(minThickness + (it * step))
             }
         }
     }
 
-    private fun tapAnimation(v: View){
+    private fun tapAnimation(v: View) {
         val animation = AnimationUtils.loadAnimation(this, R.anim.bounce)
         val interpolator = BounceInt(0.2, 10.0)
         animation.interpolator = interpolator
@@ -338,10 +345,34 @@ class FullscreenActivity : AppCompatActivity() {
         Log.d("MainActivity.kt -- tapAnimation", "ok?")
     }
 
-    private fun dismiss(dialog: BottomSheetDialog){
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
+    private fun dismiss(dialog: BottomSheetDialog) {
+        val sharedPreferences =
+            PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
         val dismiss = sharedPreferences.getBoolean("auto-dismiss", false)
         if (dismiss)
             dialog.dismiss()
+    }
+
+    @SuppressLint("InflateParams")
+    private fun saveDialog() {
+        val builder = AlertDialog.Builder(this)
+        val view = layoutInflater.inflate(R.layout.save_image_dialog, null, false)
+        val fileName: EditText = view.findViewById(R.id.file_name_et)
+        builder
+            .setTitle("Input file name")
+            .setIcon(R.drawable.ic_baseline_save_24)
+            .setView(view)
+            .setNegativeButton("Cancel") { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.cancel()
+            }
+            .setPositiveButton("PNG") { dialogInterface: DialogInterface, _: Int ->
+                Log.d("FullScreenActivity.kt -- saveDialog", fileName.text.toString())
+                dialogInterface.dismiss()
+            }
+            .setNeutralButton("SVG") { dialogInterface: DialogInterface, _: Int ->
+                Log.d("FullScreenActivity.kt -- saveDialog", fileName.text.toString())
+                dialogInterface.dismiss()
+            }
+        builder.show()
     }
 }
